@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import InvestmentPage from './components/InvestmentPage';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/investment" element={<InvestmentPage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
