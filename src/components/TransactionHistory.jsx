@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LanguageContext } from '../context/LanguageContext';
 import { 
   Calendar, 
   Search, 
@@ -11,6 +13,7 @@ import {
 } from 'lucide-react';
 
 const TransactionHistory = () => {
+  const { t } = useContext(LanguageContext);
   const [filter, setFilter] = useState('all');
   const [dateRange, setDateRange] = useState('7days');
 
@@ -18,30 +21,30 @@ const TransactionHistory = () => {
   const transactions = [
     {
       id: 1,
-      type: '存入',
+      type: t?.transactionHistory?.transactionTypes?.deposit || '存入',
       asset: 'USDT',
       amount: '10,000.00',
-      status: '成功',
+      status: t?.transactionHistory?.status?.success || '成功',
       time: '2025-02-21 14:30:25',
       txHash: '0x1234...5678',
       direction: 'in',
     },
     {
       id: 2,
-      type: '借出',
+      type: t?.transactionHistory?.transactionTypes?.lend || '借出',
       asset: 'USDT',
       amount: '5,000.00',
-      status: '进行中',
+      status: t?.transactionHistory?.status?.inProgress || '进行中',
       time: '2025-02-20 09:15:10',
       txHash: '0x8765...4321',
       direction: 'out',
     },
     {
       id: 3,
-      type: '收益发放',
+      type: t?.transactionHistory?.transactionTypes?.yield || '收益发放',
       asset: 'USDT',
       amount: '125.50',
-      status: '成功',
+      status: t?.transactionHistory?.status?.success || '成功',
       time: '2025-02-19 00:00:00',
       txHash: '0xabcd...efgh',
       direction: 'in',
@@ -53,10 +56,12 @@ const TransactionHistory = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">交易历史</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {t?.transactionHistory?.title || '交易历史'}
+          </h1>
           <button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
             <Download size={20} />
-            导出记录
+            {t?.transactionHistory?.exportRecords || '导出记录'}
           </button>
         </div>
 
@@ -66,7 +71,7 @@ const TransactionHistory = () => {
           <div className="relative">
             <input 
               type="text"
-              placeholder="搜索交易..."
+              placeholder={t?.transactionHistory?.searchPlaceholder || '搜索交易...'}
               className="w-full bg-slate-800 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
@@ -78,19 +83,19 @@ const TransactionHistory = () => {
               className={`flex-1 px-3 py-1 rounded-md ${filter === 'all' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setFilter('all')}
             >
-              全部
+              {t?.transactionHistory?.filterTypes?.all || '全部'}
             </button>
             <button 
               className={`flex-1 px-3 py-1 rounded-md ${filter === 'in' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setFilter('in')}
             >
-              存入
+              {t?.transactionHistory?.filterTypes?.deposit || '存入'}
             </button>
             <button 
               className={`flex-1 px-3 py-1 rounded-md ${filter === 'out' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setFilter('out')}
             >
-              借出
+              {t?.transactionHistory?.filterTypes?.lend || '借出'}
             </button>
           </div>
 
@@ -100,19 +105,19 @@ const TransactionHistory = () => {
               className={`flex-1 px-3 py-1 rounded-md ${dateRange === '7days' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setDateRange('7days')}
             >
-              7天
+              {t?.transactionHistory?.dateRanges?.sevenDays || '7天'}
             </button>
             <button 
               className={`flex-1 px-3 py-1 rounded-md ${dateRange === '30days' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setDateRange('30days')}
             >
-              30天
+              {t?.transactionHistory?.dateRanges?.thirtyDays || '30天'}
             </button>
             <button 
               className={`flex-1 px-3 py-1 rounded-md ${dateRange === 'custom' ? 'bg-blue-500 text-white' : 'text-gray-400'}`}
               onClick={() => setDateRange('custom')}
             >
-              自定义
+              {t?.transactionHistory?.dateRanges?.custom || '自定义'}
             </button>
           </div>
         </div>
@@ -122,12 +127,24 @@ const TransactionHistory = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-700">
-                <th className="text-left text-gray-400 px-6 py-4">类型</th>
-                <th className="text-left text-gray-400 px-6 py-4">资产</th>
-                <th className="text-left text-gray-400 px-6 py-4">金额</th>
-                <th className="text-left text-gray-400 px-6 py-4">状态</th>
-                <th className="text-left text-gray-400 px-6 py-4">时间</th>
-                <th className="text-left text-gray-400 px-6 py-4">交易哈希</th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.type || '类型'}
+                </th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.asset || '资产'}
+                </th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.amount || '金额'}
+                </th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.status || '状态'}
+                </th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.time || '时间'}
+                </th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.transactionHistory?.tableHeaders?.txHash || '交易哈希'}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -165,7 +182,7 @@ const TransactionHistory = () => {
         {/* Pagination */}
         <div className="flex justify-between items-center mt-6">
           <div className="text-gray-400">
-            显示 1-10 共 50 条记录
+            {t?.transactionHistory?.pagination?.showing || '显示 1-10 共 50 条记录'}
           </div>
           <div className="flex items-center gap-2">
             <button className="p-2 bg-slate-800 rounded-lg text-gray-400 hover:text-white">

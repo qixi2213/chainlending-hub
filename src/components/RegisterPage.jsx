@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LanguageContext } from '../context/LanguageContext';
 import { Mail, Lock, User, ArrowLeft, Github } from 'lucide-react';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { t } = useContext(LanguageContext);
   const [registerMethod, setRegisterMethod] = useState('email');
 
   return (
@@ -17,7 +19,9 @@ const RegisterPage = () => {
           >
             <ArrowLeft size={20} />
           </button>
-          <h2 className="text-2xl font-bold text-white text-center flex-1">创建账户</h2>
+          <h2 className="text-2xl font-bold text-white text-center flex-1">
+            {t?.registerPage?.title || '创建账户'}
+          </h2>
         </div>
 
         {/* 注册方式选择 */}
@@ -28,7 +32,7 @@ const RegisterPage = () => {
             onClick={() => setRegisterMethod('email')}
           >
             <Mail size={20} />
-            邮箱注册
+            {t?.registerPage?.emailRegister || '邮箱注册'}
           </button>
           <button 
             className={`flex-1 py-3 rounded-lg flex items-center justify-center gap-2
@@ -36,34 +40,40 @@ const RegisterPage = () => {
             onClick={() => setRegisterMethod('phone')}
           >
             <User size={20} />
-            手机注册
+            {t?.registerPage?.phoneRegister || '手机注册'}
           </button>
         </div>
 
         {/* 注册表单 */}
         <form className="space-y-4">
           <div>
-            <label className="block text-gray-400 mb-2">邮箱地址</label>
+            <label className="block text-gray-400 mb-2">
+              {t?.registerPage?.emailLabel || '邮箱地址'}
+            </label>
             <input 
               type="email"
               className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white border border-slate-600 focus:border-blue-500 focus:outline-none"
-              placeholder="请输入邮箱地址"
+              placeholder={t?.registerPage?.emailPlaceholder || '请输入邮箱地址'}
             />
           </div>
           <div>
-            <label className="block text-gray-400 mb-2">密码</label>
+            <label className="block text-gray-400 mb-2">
+              {t?.registerPage?.passwordLabel || '密码'}
+            </label>
             <input 
               type="password"
               className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white border border-slate-600 focus:border-blue-500 focus:outline-none"
-              placeholder="请设置登录密码"
+              placeholder={t?.registerPage?.passwordPlaceholder || '请设置登录密码'}
             />
           </div>
           <div>
-            <label className="block text-gray-400 mb-2">确认密码</label>
+            <label className="block text-gray-400 mb-2">
+              {t?.registerPage?.confirmPasswordLabel || '确认密码'}
+            </label>
             <input 
               type="password"
               className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white border border-slate-600 focus:border-blue-500 focus:outline-none"
-              placeholder="请再次输入密码"
+              placeholder={t?.registerPage?.confirmPasswordPlaceholder || '请再次输入密码'}
             />
           </div>
 
@@ -71,14 +81,16 @@ const RegisterPage = () => {
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold"
           >
-            注册账户
+            {t?.registerPage?.registerButton || '注册账户'}
           </button>
         </form>
 
         {/* 分割线 */}
         <div className="flex items-center my-6">
           <div className="flex-1 border-t border-gray-600"></div>
-          <span className="px-4 text-gray-400">或</span>
+          <span className="px-4 text-gray-400">
+            {t?.registerPage?.or || '或'}
+          </span>
           <div className="flex-1 border-t border-gray-600"></div>
         </div>
 
@@ -86,22 +98,22 @@ const RegisterPage = () => {
         <div className="space-y-4">
           <button className="w-full bg-white hover:bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
             <img src="/api/placeholder/20/20" alt="Google" className="w-5 h-5" />
-            使用 Google 账号注册
+            {t?.registerPage?.googleRegister || '使用 Google 账号注册'}
           </button>
           <button className="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
             <Github size={20} />
-            使用 GitHub 账号注册
+            {t?.registerPage?.githubRegister || '使用 GitHub 账号注册'}
           </button>
         </div>
 
         {/* 登录链接 */}
         <p className="text-center mt-6 text-gray-400">
-          已有账户？
+          {t?.registerPage?.existingAccount || '已有账户？'}
           <button 
             onClick={() => navigate('/login')} 
             className="text-blue-400 hover:text-blue-300 ml-2"
           >
-            立即登录
+            {t?.registerPage?.loginNow || '立即登录'}
           </button>
         </p>
       </div>

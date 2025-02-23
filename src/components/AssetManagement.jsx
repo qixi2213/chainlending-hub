@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { 
   Wallet, 
   ArrowRightLeft, 
@@ -9,9 +9,11 @@ import {
   AlertCircle,
   LineChart
 } from 'lucide-react';
+import { LanguageContext } from '../context/LanguageContext';
 
 const AssetManagement = () => {
   const [selectedAsset, setSelectedAsset] = useState('USDT');
+  const { t } = useContext(LanguageContext);
 
   const assets = {
     total: '125,000.00',
@@ -49,21 +51,25 @@ const AssetManagement = () => {
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">资产管理</h1>
-            <p className="text-gray-400">管理您的数字资产投资组合</p>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {t?.services?.assetManagement?.title || '资产管理'}
+            </h1>
+            <p className="text-gray-400">
+              {t?.services?.assetManagement?.description || '管理您的数字资产投资组合'}
+            </p>
           </div>
           <div className="flex gap-3">
             <button className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
               <PlusCircle size={20} />
-              充值
+              {t?.assetManagement?.deposit || '充值'}
             </button>
             <button className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
               <MinusCircle size={20} />
-              提现
+              {t?.assetManagement?.withdraw || '提现'}
             </button>
             <button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
               <ArrowRightLeft size={20} />
-              转账
+              {t?.assetManagement?.transfer || '转账'}
             </button>
           </div>
         </div>
@@ -73,7 +79,9 @@ const AssetManagement = () => {
           <div className="bg-slate-800 rounded-xl p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-400 mb-1">总资产估值 (USDT)</p>
+                <p className="text-gray-400 mb-1">
+                  {t?.assetManagement?.totalAssetValue || '总资产估值 (USDT)'}
+                </p>
                 <h2 className="text-2xl font-bold text-white">${assets.total}</h2>
               </div>
               <Wallet className="text-blue-400" size={24} />
@@ -82,7 +90,9 @@ const AssetManagement = () => {
           <div className="bg-slate-800 rounded-xl p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-400 mb-1">可用资产</p>
+                <p className="text-gray-400 mb-1">
+                  {t?.assetManagement?.availableAssets || '可用资产'}
+                </p>
                 <h2 className="text-2xl font-bold text-green-400">$98,500.00</h2>
               </div>
               <Clock className="text-green-400" size={24} />
@@ -91,7 +101,9 @@ const AssetManagement = () => {
           <div className="bg-slate-800 rounded-xl p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-400 mb-1">锁定资产</p>
+                <p className="text-gray-400 mb-1">
+                  {t?.assetManagement?.lockedAssets || '锁定资产'}
+                </p>
                 <h2 className="text-2xl font-bold text-yellow-400">$26,500.00</h2>
               </div>
               <AlertCircle className="text-yellow-400" size={24} />
@@ -102,18 +114,34 @@ const AssetManagement = () => {
         {/* Asset List */}
         <div className="bg-slate-800 rounded-xl overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-700">
-            <h3 className="text-xl font-bold text-white">资产列表</h3>
+            <h3 className="text-xl font-bold text-white">
+              {t?.assetManagement?.assetList || '资产列表'}
+            </h3>
           </div>
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-700">
-                <th className="text-left text-gray-400 px-6 py-4">资产</th>
-                <th className="text-right text-gray-400 px-6 py-4">总额</th>
-                <th className="text-right text-gray-400 px-6 py-4">可用</th>
-                <th className="text-right text-gray-400 px-6 py-4">锁定</th>
-                <th className="text-right text-gray-400 px-6 py-4">估值(USDT)</th>
-                <th className="text-right text-gray-400 px-6 py-4">24h涨跌</th>
-                <th className="text-center text-gray-400 px-6 py-4">操作</th>
+                <th className="text-left text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.asset || '资产'}
+                </th>
+                <th className="text-right text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.total || '总额'}
+                </th>
+                <th className="text-right text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.available || '可用'}
+                </th>
+                <th className="text-right text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.locked || '锁定'}
+                </th>
+                <th className="text-right text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.value || '估值(USDT)'}
+                </th>
+                <th className="text-right text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.change || '24h涨跌'}
+                </th>
+                <th className="text-center text-gray-400 px-6 py-4">
+                  {t?.assetManagement?.tableHeaders?.actions || '操作'}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -138,9 +166,15 @@ const AssetManagement = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex justify-center gap-2">
-                      <button className="text-green-400 hover:text-green-300">充值</button>
-                      <button className="text-red-400 hover:text-red-300">提现</button>
-                      <button className="text-blue-400 hover:text-blue-300">交易</button>
+                      <button className="text-green-400 hover:text-green-300">
+                        {t?.assetManagement?.actionButtons?.deposit || '充值'}
+                      </button>
+                      <button className="text-red-400 hover:text-red-300">
+                        {t?.assetManagement?.actionButtons?.withdraw || '提现'}
+                      </button>
+                      <button className="text-blue-400 hover:text-blue-300">
+                        {t?.assetManagement?.actionButtons?.trade || '交易'}
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -152,15 +186,23 @@ const AssetManagement = () => {
         {/* Asset Chart */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div className="bg-slate-800 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-white mb-4">资产分布</h3>
+            <h3 className="text-xl font-bold text-white mb-4">
+              {t?.assetManagement?.assetDistribution || '资产分布'}
+            </h3>
             <div className="aspect-square bg-slate-700 rounded-lg flex items-center justify-center">
-              <p className="text-gray-400">资产分布饼图</p>
+              <p className="text-gray-400">
+                {t?.assetManagement?.assetDistributionChart || '资产分布饼图'}
+              </p>
             </div>
           </div>
           <div className="bg-slate-800 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-white mb-4">资产趋势</h3>
+            <h3 className="text-xl font-bold text-white mb-4">
+              {t?.assetManagement?.assetTrend || '资产趋势'}
+            </h3>
             <div className="aspect-square bg-slate-700 rounded-lg flex items-center justify-center">
-              <p className="text-gray-400">资产趋势图表</p>
+              <p className="text-gray-400">
+                {t?.assetManagement?.assetTrendChart || '资产趋势图表'}
+              </p>
             </div>
           </div>
         </div>

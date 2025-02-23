@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LanguageContext } from '../context/LanguageContext';
 import { 
   Shield, 
   LineChart, 
@@ -30,24 +31,25 @@ const ServiceCard = ({ icon: Icon, title, description, path, navigate }) => (
 const LandingPage = () => {
   const [activeTab, setActiveTab] = useState('lender');
   const navigate = useNavigate();
+  const { t, toggleLanguage, language } = useContext(LanguageContext);
 
   const services = [
     {
       icon: Wallet,
-      title: "资产管理",
-      description: "全面掌控您的数字资产，智能资产配置",
+      title: t?.services?.assetManagement?.title || 'Asset Management',
+      description: t?.services?.assetManagement?.description || 'Comprehensive digital asset management',
       path: "/assets"
     },
     {
       icon: BarChart2,
-      title: "交易历史",
-      description: "追踪每一笔交易，详细记录一目了然",
+      title: t?.services?.transactionHistory?.title || 'Transaction History',
+      description: t?.services?.transactionHistory?.description || 'Track your transactions',
       path: "/history"
     },
     {
       icon: Layers,
-      title: "DeFi服务",
-      description: "探索去中心化金融的无限可能",
+      title: t?.services?.defiServices?.title || 'DeFi Services',
+      description: t?.services?.defiServices?.description || 'Explore decentralized finance',
       path: "/defi-services"
     }
   ];
@@ -68,31 +70,38 @@ const LandingPage = () => {
               onClick={() => navigate('/')} 
               className="hover:text-blue-400"
             >
-              首页
+              {t?.nav?.home || 'Home'}
             </button>
             <button 
               onClick={() => navigate('/product')} 
               className="hover:text-blue-400"
             >
-              产品
+              {t?.nav?.products || 'Products'}
             </button>
             <button 
               onClick={() => navigate('/dashboard')} 
               className="hover:text-blue-400"
             >
-              控制台
+              {t?.nav?.dashboard || 'Dashboard'}
+            </button>
+            {/* 语言切换按钮 */}
+            <button 
+              onClick={toggleLanguage}
+              className="px-3 py-1 border rounded hover:bg-blue-500/10"
+            >
+              {language === 'zh' ? 'EN' : '中文'}
             </button>
             <button 
               onClick={() => navigate('/login')}
               className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg"
             >
-              登录
+              {t?.nav?.login || 'Login'}
             </button>
             <button 
               onClick={() => navigate('/register')}
               className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg"
             >
-              注册
+              {t?.nav?.register || 'Register'}
             </button>
           </div>
         </nav>
@@ -101,30 +110,30 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl font-bold mb-6">
-          安全、合规的数字资产借贷平台
+          {t?.hero?.title || 'Secure, Compliant Digital Asset Lending Platform'}
         </h1>
         <p className="text-xl text-gray-300 mb-8">
-          连接全球投资者，释放数字资产价值
+          {t?.hero?.subtitle || 'Connecting Global Investors, Unleashing Digital Asset Value'}
         </p>
         <div className="flex justify-center gap-4">
           <button 
             onClick={() => navigate('/investment')}
             className="bg-blue-500 hover:bg-blue-600 px-8 py-3 rounded-lg flex items-center"
           >
-            开始投资 <ArrowRight className="ml-2" />
+            {t?.hero?.startInvesting || 'Start Investing'} <ArrowRight className="ml-2" />
           </button>
           <button 
             onClick={() => navigate('/dashboard')}
             className="border border-blue-500 hover:bg-blue-500/10 px-8 py-3 rounded-lg"
           >
-            我的面板
+            {t?.hero?.myDashboard || 'My Dashboard'}
           </button>
         </div>
       </section>
 
       {/* Services Preview */}
       <section className="container mx-auto px-4 py-16 bg-slate-800/50">
-        <h2 className="text-3xl font-bold text-center mb-12">我们的服务</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{t?.services?.title || 'Our Services'}</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <ServiceCard 
@@ -138,48 +147,42 @@ const LandingPage = () => {
 
       {/* Features */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">平台优势</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{t?.features?.title || 'Platform Advantages'}</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-slate-800/50 p-6 rounded-xl">
             <Shield className="w-12 h-12 text-blue-400 mb-4" />
-            <h3 className="text-xl font-bold mb-2">安全可靠</h3>
-            <p className="text-gray-400">
-              智能合约自动执行，多重安全保障，资产安全无忧
-            </p>
+            <h3 className="text-xl font-bold mb-2">{t?.features?.secure?.title || 'Secure & Reliable'}</h3>
+            <p className="text-gray-400">{t?.features?.secure?.description || 'Smart contracts with multiple security guarantees'}</p>
           </div>
           <div className="bg-slate-800/50 p-6 rounded-xl">
             <LineChart className="w-12 h-12 text-blue-400 mb-4" />
-            <h3 className="text-xl font-bold mb-2">收益稳健</h3>
-            <p className="text-gray-400">
-              灵活的借贷机制，优质的收益回报，资产增值保障
-            </p>
+            <h3 className="text-xl font-bold mb-2">{t?.features?.returns?.title || 'Stable Returns'}</h3>
+            <p className="text-gray-400">{t?.features?.returns?.description || 'Flexible lending mechanism with quality return guarantees'}</p>
           </div>
           <div className="bg-slate-800/50 p-6 rounded-xl">
             <Lock className="w-12 h-12 text-blue-400 mb-4" />
-            <h3 className="text-xl font-bold mb-2">合规运营</h3>
-            <p className="text-gray-400">
-              与监管机构深度合作，确保平台运营合法合规
-            </p>
+            <h3 className="text-xl font-bold mb-2">{t?.features?.compliance?.title || 'Compliant Operation'}</h3>
+            <p className="text-gray-400">{t?.features?.compliance?.description || 'Deep cooperation with regulatory authorities'}</p>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">如何使用</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{t?.howItWorks?.title || 'How It Works'}</h2>
         <div className="flex justify-center mb-8">
           <div className="flex rounded-lg overflow-hidden">
             <button 
               className={`px-6 py-3 ${activeTab === 'lender' ? 'bg-blue-500' : 'bg-slate-700'}`}
               onClick={() => setActiveTab('lender')}
             >
-              我是出借方
+              {t?.howItWorks?.lender || "I'm a Lender"}
             </button>
             <button 
               className={`px-6 py-3 ${activeTab === 'borrower' ? 'bg-blue-500' : 'bg-slate-700'}`}
               onClick={() => setActiveTab('borrower')}
             >
-              我是借入方
+              {t?.howItWorks?.borrower || "I'm a Borrower"}
             </button>
           </div>
         </div>
@@ -189,36 +192,36 @@ const LandingPage = () => {
             <>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <Wallet className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">存入资产</h3>
-                <p className="text-gray-400">快速完成KYC认证，存入数字资产</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.lenderSteps?.deposit?.title || 'Deposit Assets'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.lenderSteps?.deposit?.description || 'Complete KYC, deposit digital assets'}</p>
               </div>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <LineChart className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">选择收益方案</h3>
-                <p className="text-gray-400">灵活设置借贷期限和收益要求</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.lenderSteps?.select?.title || 'Choose Plan'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.lenderSteps?.select?.description || 'Set lending terms and return requirements'}</p>
               </div>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <CircleDollarSign className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">获取收益</h3>
-                <p className="text-gray-400">智能合约自动执行，定期获取收益</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.lenderSteps?.earn?.title || 'Earn Returns'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.lenderSteps?.earn?.description || 'Smart contracts auto-execute, receive regular returns'}</p>
               </div>
             </>
           ) : (
             <>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">注册认证</h3>
-                <p className="text-gray-400">完成身份认证和信用评估</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.borrowerSteps?.register?.title || 'Register'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.borrowerSteps?.register?.description || 'Complete identity and credit assessment'}</p>
               </div>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <Globe className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">发起借贷</h3>
-                <p className="text-gray-400">选择借贷金额和期限，提交申请</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.borrowerSteps?.apply?.title || 'Apply for Loan'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.borrowerSteps?.apply?.description || 'Select loan amount and term'}</p>
               </div>
               <div className="bg-slate-800/50 p-6 rounded-xl text-center">
                 <CheckCircle className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">收到资金</h3>
-                <p className="text-gray-400">自动匹配资金，快速完成放款</p>
+                <h3 className="text-xl font-bold mb-2">{t?.howItWorks?.borrowerSteps?.receive?.title || 'Receive Funds'}</h3>
+                <p className="text-gray-400">{t?.howItWorks?.borrowerSteps?.receive?.description || 'Auto-match funds, quick loan disbursement'}</p>
               </div>
             </>
           )}
@@ -231,19 +234,19 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-4xl font-bold mb-2">$100M+</div>
-              <div className="text-gray-400">交易总额</div>
+              <div className="text-gray-400">{t?.stats?.tradingVolume || 'Trading Volume'}</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">50K+</div>
-              <div className="text-gray-400">注册用户</div>
+              <div className="text-gray-400">{t?.stats?.users || 'Registered Users'}</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">12%</div>
-              <div className="text-gray-400">平均年化收益</div>
+              <div className="text-gray-400">{t?.stats?.averageApy || 'Average APY'}</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">100%</div>
-              <div className="text-gray-400">安全记录</div>
+              <div className="text-gray-400">{t?.stats?.safetyRecord || 'Safety Record'}</div>
             </div>
           </div>
         </div>
@@ -251,24 +254,20 @@ const LandingPage = () => {
 
       {/* CTA */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-6">
-          开启您的数字资产增值之旅
-        </h2>
-        <p className="text-xl text-gray-300 mb-8">
-          加入全球领先的数字资产借贷平台，实现资产价值最大化
-        </p>
+        <h2 className="text-3xl font-bold mb-6">{t?.cta?.title || 'Start Your Digital Asset Growth Journey'}</h2>
+        <p className="text-xl text-gray-300 mb-8">{t?.cta?.subtitle || 'Join the leading digital asset lending platform'}</p>
         <div className="flex justify-center gap-4">
           <button 
             onClick={() => navigate('/register')}
             className="bg-blue-500 hover:bg-blue-600 px-8 py-3 rounded-lg"
           >
-            立即注册
+            {t?.cta?.register || 'Sign Up Now'}
           </button>
           <button 
             onClick={() => navigate('/login')}
             className="bg-green-500 hover:bg-green-600 px-8 py-3 rounded-lg"
           >
-            登录
+            {t?.cta?.login || 'Login'}
           </button>
         </div>
       </section>
@@ -278,36 +277,35 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 text-gray-400">
             <div>
-              <h4 className="font-bold mb-4">快速导航</h4>
+              <h4 className="font-bold mb-4">{t?.footer?.quickNav || 'Quick Navigation'}</h4>
               <ul className="space-y-2">
-                <li><button onClick={() => navigate('/')} className="hover:text-blue-400">首页</button></li>
-                <li><button onClick={() => navigate('/investment')} className="hover:text-blue-400">投资产品</button></li>
-                <li><button onClick={() => navigate('/dashboard')} className="hover:text-blue-400">控制台</button></li>
+                <li><button onClick={() => navigate('/')} className="hover:text-blue-400">{t?.nav?.home || 'Home'}</button></li>
+                <li><button onClick={() => navigate('/investment')} className="hover:text-blue-400">{t?.nav?.products || 'Products'}</button></li>
+                <li><button onClick={() => navigate('/dashboard')} className="hover:text-blue-400">{t?.nav?.dashboard || 'Dashboard'}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">用户服务</h4>
+              <h4 className="font-bold mb-4">{t?.footer?.userService || 'User Service'}</h4>
               <ul className="space-y-2">
-                <li><button onClick={() => navigate('/login')} className="hover:text-blue-400">登录</button></li>
-                <li><button onClick={() => navigate('/register')} className="hover:text-blue-400">注册</button></li>
-                <li><button onClick={() => navigate('/assets')} className="hover:text-blue-400">资产管理</button></li>
+                <li><button onClick={() => navigate('/login')} className="hover:text-blue-400">{t?.nav?.login || 'Login'}</button></li>
+                <li><button onClick={() => navigate('/register')} className="hover:text-blue-400">{t?.nav?.register || 'Register'}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">平台服务</h4>
+              <h4 className="font-bold mb-4">{t?.footer?.platformService || 'Platform Service'}</h4>
               <ul className="space-y-2">
-                <li><button onClick={() => navigate('/history')} className="hover:text-blue-400">交易历史</button></li>
-                <li><button onClick={() => navigate('/defi-services')} className="hover:text-blue-400">DeFi服务</button></li>
+                <li><button onClick={() => navigate('/history')} className="hover:text-blue-400">{t?.services?.transactionHistory?.title || 'Transaction History'}</button></li>
+                <li><button onClick={() => navigate('/defi-services')} className="hover:text-blue-400">{t?.services?.defiServices?.title || 'DeFi Services'}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">联系我们</h4>
-              <p>客服热线: 400-XXX-XXXX</p>
-              <p>邮箱: support@chainlendinghub.com</p>
+              <h4 className="font-bold mb-4">{t?.footer?.contactUs || 'Contact Us'}</h4>
+              <p>{t?.footer?.customerService || 'Customer Service: 400-XXX-XXXX'}</p>
+              <p>{t?.footer?.email || 'Email: support@chainlendinghub.com'}</p>
             </div>
           </div>
           <div className="text-center text-gray-400 mt-8">
-            <p>© 2025 ChainLending Hub. All rights reserved.</p>
+            <p>{t?.footer?.copyright || '© 2025 ChainLending Hub. All rights reserved.'}</p>
           </div>
         </div>
       </footer>
